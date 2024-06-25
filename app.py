@@ -7,7 +7,7 @@ df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapmi
 app = Dash()
 
 app.layout = [
-    html.H1(children='ACG DataViz', style={'textAlign':'center'}),
+    html.H1(children='ACG DataViz!', style={'textAlign':'center'}),
     dcc.Dropdown(df.country.unique(), 'Canada', id='dropdown-selection'),
     dcc.Graph(id='graph-content')
 ]
