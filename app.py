@@ -10,6 +10,8 @@ df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapmi
 app = Dash(__name__, use_pages=True)
 server = app.server  # expose server variable for Procfile
 
+# test
+
 # app.layout = [
 #     html.H1(children='ACG DataViz!', style={'textAlign':'center'}),
 #     dcc.Dropdown(df.country.unique(), 'Canada', id='dropdown-selection'),
