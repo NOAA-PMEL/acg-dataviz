@@ -1,5 +1,5 @@
 from dash import Dash, html, dcc, callback, Output, Input
-import numpy
+# import numpy
 import pandas as pd
 import plotly.express as px
 
