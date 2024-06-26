@@ -6,7 +6,7 @@ import plotly.express as px
 import dash_design_kit as ddk
 
 df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder_unfiltered.csv')
-dash.register_page(__name__, path="/home")
+dash.register_page(__name__, path="/")
 # app = Dash(__name__, use_pages=True)
 # server = app.server  # expose server variable for Procfile
 
