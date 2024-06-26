@@ -1,6 +1,7 @@
 from dash import Dash, html, dcc, callback, Output, Input
-import plotly.express as px
+import numpy
 import pandas as pd
+import plotly.express as px
 
 df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder_unfiltered.csv')
 
