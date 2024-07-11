@@ -12,7 +12,7 @@ register_page(
 
 menu = ddk.Menu([
     ddk.CollapsibleMenu(
-        title='1D Data Visualization!',
+        title='1D Data Visualization',
         default_open=False,
         children=[
             dcc.Link('1D Data Plots', href=get_relative_path('/1d_data_plots')),

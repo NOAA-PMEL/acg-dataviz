@@ -4,5 +4,5 @@ gunicorn
 dash-design-kit
 pandas
 numpy
-plotly
+plotly==5.22.0
 xarray
