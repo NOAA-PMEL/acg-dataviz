@@ -16,25 +16,25 @@ menu = ddk.Menu([
         default_open=False,
         children=[
             dcc.Link('1D Data Plots', href=get_relative_path('/1d_data_plots')),
-            # dcc.Link('Property/Property Plots', href=app.get_relative_path('/propPropPlot')),
+            dcc.Link('Property/Property Plots', href=get_relative_path('/propPropPlot')),
         ]
     ),
-    # ddk.CollapsibleMenu(
-    #     title='2D Data Visualization',
-    #     default_open=False,
-    #     children=[
-    #         dcc.Link('CDP', href=app.get_relative_path('/cdp')),
-    #         dcc.Link('MSEMS', href=app.get_relative_path('/msems')),
-    #         dcc.Link('POPS - not done', href=app.get_relative_path('/pops'))
-    #     ]
-    # ),
-    # ddk.CollapsibleMenu(
-    #     title='3D Data Visualization',
-    #     default_open=False,
-    #     children=[
-    #         dcc.Link('Trajectory Plot', href=app.get_relative_path('/trajectory')),
-    #     ]
-    # ),
+    ddk.CollapsibleMenu(
+        title='2D Data Visualization',
+        default_open=False,
+        children=[
+            dcc.Link('CDP', href=get_relative_path('/cdp')),
+            dcc.Link('MSEMS', href=get_relative_path('/msems')),
+            dcc.Link('POPS - not done', href=get_relative_path('/pops'))
+        ]
+    ),
+    ddk.CollapsibleMenu(
+        title='3D Data Visualization',
+        default_open=False,
+        children=[
+            dcc.Link('Trajectory Plot', href=get_relative_path('/trajectory')),
+        ]
+    ),
 ])
 
 # def layout():

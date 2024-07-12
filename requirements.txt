@@ -1,8 +1,10 @@
-dash-design-kit==1.6.7
-dash==2.4.1
-gunicorn
 dash-design-kit
+dash
+gunicorn
 pandas
 numpy
-plotly==5.22.0
+plotly
 xarray
+scipy
+matplotlib
+netCDF4

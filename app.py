@@ -55,7 +55,7 @@ import dash_design_kit as ddk
 import plotly.express as px
 
 
-app = Dash(__name__, title="NewLayoutTry", use_pages=True, pages_folder="pages")
+app = Dash(__name__, title="ACGDataViz", use_pages=True, pages_folder="pages")
 server = app.server  # expose server variable for Procfile
 
 
@@ -74,8 +74,8 @@ menu = ddk.Menu([
 app.layout = ddk.App([
     dcc.Location(id='_pages_location'),  # Add Location component
     ddk.Header([
-        ddk.Logo(src=app.get_asset_url('PMEL_logo.png')),
-        ddk.Title('DataViz'),
+        ddk.Logo(src=app.get_asset_url('ACG-header-logo.png')),
+        ddk.Title('ACGDataViz'),
         dcc.Link(html.Button('Home', style={'margin-left': '20px'}), href=app.get_relative_path('/home')),
         menu
     ], style={'background-color': '#add8e6'}),
