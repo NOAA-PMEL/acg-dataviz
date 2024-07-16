@@ -5,9 +5,9 @@ import dash_design_kit as ddk
 
 register_page(
     __name__,
-    name='Tillamook Project',
+    name='Tillamook2022 UAS Project',
     top_nav=True,
-    path='/Tillamook'
+    path='/Tillamook2022'
 )
 
 menu = ddk.Menu([
@@ -17,6 +17,7 @@ menu = ddk.Menu([
         children=[
             dcc.Link('1D Data Plots', href=get_relative_path('/1d_data_plots')),
             dcc.Link('Property/Property Plots', href=get_relative_path('/propPropPlot')),
+            dcc.Link('test page', href=get_relative_path('/test')),
         ]
     ),
     ddk.CollapsibleMenu(
@@ -32,7 +33,7 @@ menu = ddk.Menu([
         title='3D Data Visualization',
         default_open=False,
         children=[
-            dcc.Link('Trajectory Plot', href=get_relative_path('/trajectory')),
+            dcc.Link('Trajectory Plot', href=get_relative_path('/Tillamook2023/trajectory_3d')),
         ]
     ),
 ])
@@ -44,7 +45,7 @@ menu = ddk.Menu([
     
     
 # Define the layout using Dash Design Kit
-layout = ddk.App([
+layout = ddk.Block([
     ddk.Card("Tillamook Data Here."),
     ddk.Row([
         ddk.Sidebar([

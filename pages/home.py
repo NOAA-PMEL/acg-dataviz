@@ -64,11 +64,11 @@ register_page(
     __name__,
     name='home',
     top_nav=True,
-    path='/home'
+    path='/'
 )
 
 
-layout = ddk.App([
+layout = ddk.Block([
     ddk.Card("Welcome to ACG-DataViz!"),
     ddk.Block(
         html.Img(src='/assets/drone.jpg', style={'width': '100%', 'height': 'auto'})

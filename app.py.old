@@ -2,31 +2,20 @@ import dash
 from dash import Dash, dcc, html
 import dash_design_kit as ddk
 
-app = Dash(__name__, use_pages=True, suppress_callback_exceptions=True)
+app = Dash(__name__, use_pages=True)
 server = app.server  # expose server variable for Procfile
-menu = ddk.Menu(
-    children=[ddk.CollapsibleMenu(
-        title='Projects',
-        children=[
-            # dcc.Link('joe', href=app.get_relative_path('/joe')),
-            # dcc.Link('Tillamook', href='tillamook/trajectory'),
-            dcc.Link('Tillamook2022', href='Tillamook2022'),
-            dcc.Link('Vandenberg2023', href='Vandenberg2023'),
-            dcc.Link('ATOMIC', href='ATOMIC'),
-            # dcc.Link('Investment', href='/'),
-        ])
-    ]
-)
 
-app.layout = ddk.App([    
+app.layout = ddk.App([
+    # dcc.Location(id='_pages_location'),  # Add Location component
+    # dcc.Location(id='url'),  # Add Location component
     ddk.Header([
         ddk.Logo(src=app.get_asset_url('ACG-header-logo.png')),
         ddk.Title('ACGDataViz'),
         dcc.Link(html.Button('Home', style={'margin-left': '20px'}), href=app.get_relative_path('/')),
-        menu,
     ], style={'background-color': '#add8e6'}),
     
-    dash.page_container, # Add page container
+    dcc.Store(id='_pages_store'),  # Add Store component for internal state management
+    ddk.Block(width=1, children=[dash.page_container]),  # Add page container
     ddk.PageFooter(children=[
         html.Hr(),
         ddk.Block(children=[
