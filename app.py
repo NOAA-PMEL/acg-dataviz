@@ -18,14 +18,29 @@ menu = ddk.Menu(
     ]
 )
 
-app.layout = ddk.App([    
+app.layout = ddk.App(show_editor=True, children=[    
     ddk.Header([
-        ddk.Logo(src=app.get_asset_url('ACG-header-logo.png')),
-        ddk.Title('ACGDataViz'),
-        dcc.Link(html.Button('Home', style={'margin-left': '20px'}), href=app.get_relative_path('/')),
+        # ddk.Logo(src=app.get_asset_url('DataViz_logo_stacked_compass_rose.png')),
+        # ddk.Logo(src=app.get_asset_url('ACG_orbit.png')),
+        # ddk.Logo(src=app.get_asset_url('original_compass_orbit.png')),
+        # ddk.Logo(src=app.get_asset_url('compass_rose_horizontal.png')),
+        dcc.Link(
+            ddk.Logo(src=app.get_asset_url('compass_rose_horizontal.png')),
+            href=app.get_relative_path('/')
+        ),
+        # dcc.Link(html.Button('Home', style={'margin-left': '20px'}), href=app.get_relative_path('/')),
+        # dcc.Link(
+        #     ddk.Logo(src=app.get_asset_url('original_compass_orbit.png')),
+        #     href=app.get_relative_path('/')
+        # ),
         menu,
-    ], style={'background-color': '#add8e6'}),
+    ]), # style={'background-color': '#add8e6'}
     
+    # ddk.Block([
+    #     html.Img(src=app.get_asset_url('drone.jpg'), style={'width': '50%', 'height': 'auto'})
+    # ]),
+
+
     dash.page_container, # Add page container
     ddk.PageFooter(children=[
         html.Hr(),
@@ -52,7 +67,7 @@ app.layout = ddk.App([
                 ])
             ])
         ])
-    ], style={'background-color': '#add8e6', 'padding': '10px'})
+    ], style={'padding': '10px'})
 ])
 
 # dash.page_registry.values
