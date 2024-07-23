@@ -1,5 +1,5 @@
 import dash
-from dash import html, dcc, callback, Output, Input
+from dash import html, dcc, callback, Output, Input, get_relative_path
 import dash_design_kit as ddk
 import plotly.graph_objects as go
 import requests
@@ -12,8 +12,36 @@ import numpy as np
 
 # Register the page with Dash
 dash.register_page(__name__, path="/cdp")
+# dash.register_page(__name__, path_template="/<project>/cdp") # ask
 
-
+menu = ddk.Menu([
+    ddk.CollapsibleMenu(
+        title='1D Data Visualization',
+        default_open=False,
+        children=[
+            dcc.Link('1D Data Plots', href=get_relative_path('/1d_data_plots')),
+            dcc.Link('Property/Property Plots', href=get_relative_path('/propPropPlot')),
+            # dcc.Link('test page', href=get_relative_path('/test')),
+        ]
+    ),
+    ddk.CollapsibleMenu(
+        title='2D Data Visualization',
+        default_open=False,
+        children=[
+            dcc.Link('CDP', href=get_relative_path('/cdp')),
+            dcc.Link('MSEMS', href=get_relative_path('/msems')),
+            dcc.Link('POPS - not done', href=get_relative_path('/pops'))
+        ]
+    ),
+    ddk.CollapsibleMenu(
+        title='3D Data Visualization',
+        default_open=False,
+        children=[
+            dcc.Link('Trajectory Plot', href=get_relative_path('/Tillamook2023/trajectory_3d')),
+            # dcc.Link('Trajectory Plot', href=get_relative_path('/Tillamook2023/option2'))
+        ]
+    ),
+])
 
 
 # Function to load data from URL and convert to xarray Dataset
@@ -57,35 +85,46 @@ def layout(project="unknown", **kwargs):
     layout = ddk.Block([
         ddk.Card("Page 2: CDP"),
         ddk.Row([
-            ddk.Card(dcc.Dropdown(
-                id='flight-dropdown',
-                options=[{'label': flight, 'value': flight} for flight in unique_flights],
-                placeholder='Select a flight',
-                clearable=False
-            ), width=50),
-            ddk.Card([
-                html.Label("Select Variables to Display"),
-                dcc.Checklist(
-                    id='variable-checklist',
-                    options=[
-                        {'label': 'cdp_dNdlogDp', 'value': 'cdp_dNdlogDp'},
-                        {'label': 'cdp_dSdlogDp', 'value': 'cdp_dSdlogDp'},
-                        {'label': 'cdp_dVdlogDp', 'value': 'cdp_dVdlogDp'}
-                    ],
-                    value=['cdp_dNdlogDp'],  # Default selection
-                    inline=True
-                ),
-                html.Label("Select Color Scale Range"),
-                dcc.Input(id='color-scale-min', type='number', placeholder='Min', value=0),
-                dcc.Input(id='color-scale-max', type='number', placeholder='Max', value=300),
-            ], width=50),
-        ]),
-        ddk.Row([
+            ddk.Sidebar([
+                menu
+            ], foldable=False), # style={'background-color': '#add8e6'}
+            ddk.Block([
+                ddk.Card(dcc.Dropdown(
+                    id='flight-dropdown',
+                    options=[{'label': flight, 'value': flight} for flight in unique_flights],
+                    placeholder='Select a flight',
+                    clearable=False
+                ), width=50),
+                ddk.Card([
+                    html.Label("Select Variables to Display"),
+                    dcc.Checklist(
+                        id='variable-checklist',
+                        options=[
+                            {'label': 'cdp_dNdlogDp', 'value': 'cdp_dNdlogDp'},
+                            {'label': 'cdp_dSdlogDp', 'value': 'cdp_dSdlogDp'},
+                            {'label': 'cdp_dVdlogDp', 'value': 'cdp_dVdlogDp'}
+                        ],
+                        value=['cdp_dNdlogDp'],  # Default selection
+                        inline=True
+                    ),
+                    html.Label("Select Color Scale Range"),
+                    dcc.Input(id='color-scale-min', type='number', placeholder='Min', value=0),
+                    dcc.Input(id='color-scale-max', type='number', placeholder='Max', value=300),
+                ], width=50),
+                ddk.Row([
             ddk.Card(dcc.Loading(dcc.Graph(id='cdp-graph'))),  # Use dcc.Loading and dcc.Graph to display the figure
         ], style={'marginTop': '20px', 'marginBottom': '20px', 'marginLeft': '10px', 'marginRight': '10px'}),  # Adjust margins here
         ddk.Row([
             ddk.Card(dcc.Loading(dcc.Graph(id='average-plot')))  # Use dcc.Loading and dcc.Graph for the average plot
         ], style={'marginTop': '20px', 'marginBottom': '20px', 'marginLeft': '10px', 'marginRight': '10px'})  # Adjust margins here
+            ]),
+        ]),
+        # ddk.Row([
+        #     ddk.Card(dcc.Loading(dcc.Graph(id='cdp-graph'))),  # Use dcc.Loading and dcc.Graph to display the figure
+        # ], style={'marginTop': '20px', 'marginBottom': '20px', 'marginLeft': '10px', 'marginRight': '10px'}),  # Adjust margins here
+        # ddk.Row([
+        #     ddk.Card(dcc.Loading(dcc.Graph(id='average-plot')))  # Use dcc.Loading and dcc.Graph for the average plot
+        # ], style={'marginTop': '20px', 'marginBottom': '20px', 'marginLeft': '10px', 'marginRight': '10px'})  # Adjust margins here
     ])
     return layout
 

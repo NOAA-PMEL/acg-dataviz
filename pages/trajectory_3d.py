@@ -15,7 +15,7 @@
 
 
 import dash
-from dash import html, dcc, callback, Output, Input, no_update
+from dash import html, dcc, callback, Output, Input, no_update, get_relative_path
 import dash_design_kit as ddk
 import requests
 import xarray as xr
@@ -29,6 +29,35 @@ import plotly.graph_objects as go
 # Register the page with Dash
 dash.register_page(__name__, path_template="/<project>/trajectory_3d")
 # dash.register_page(__name__, path_template="/trajectory")
+
+menu = ddk.Menu([
+    ddk.CollapsibleMenu(
+        title='1D Data Visualization',
+        default_open=False,
+        children=[
+            dcc.Link('1D Data Plots', href=get_relative_path('/1d_data_plots')),
+            dcc.Link('Property/Property Plots', href=get_relative_path('/propPropPlot')),
+            # dcc.Link('test page', href=get_relative_path('/test')),
+        ]
+    ),
+    ddk.CollapsibleMenu(
+        title='2D Data Visualization',
+        default_open=False,
+        children=[
+            dcc.Link('CDP', href=get_relative_path('/cdp')),
+            dcc.Link('MSEMS', href=get_relative_path('/msems')),
+            dcc.Link('POPS - not done', href=get_relative_path('/pops'))
+        ]
+    ),
+    ddk.CollapsibleMenu(
+        title='3D Data Visualization',
+        default_open=False,
+        children=[
+            dcc.Link('Trajectory Plot', href=get_relative_path('/Tillamook2023/trajectory_3d')),
+            # dcc.Link('Trajectory Plot', href=get_relative_path('/Tillamook2023/option2'))
+        ]
+    ),
+])
 
 # Function to load data from URL and convert to xarray Dataset
 def load_data(url):
@@ -72,38 +101,113 @@ else:
 
 # Define the layout using Dash Design Kit
 # layout = ddk.Block([
+# def layout(project="unknown", **kwargs): 
+#     layout = ddk.Block([
+#         ddk.Row([
+#             ddk.Sidebar([
+#                 menu
+#             ], foldable=False), # style={'background-color': '#add8e6'}
+#             ddk.Block([
+#                 ddk.Card(f"3D Trajectory of 1D Data ({project})"),
+#                 ddk.Card(dcc.Dropdown(
+#                     id='flight-dropdown-2',
+#                     options=[{'label': flight, 'value': flight} for flight in unique_flights],
+#                     placeholder='Select a flight',
+#                     clearable=False
+#                 )),
+#                 ddk.Card([
+#                     dcc.Dropdown(
+#                         id='color-dropdown-2',
+#                         options=[{'label': col, 'value': col} for col in columns],
+#                         placeholder='Select a variable for color',
+#                         clearable=False,
+#                         style={'width': '200px', 'margin-bottom': '10px'}
+#                     ),
+#                     dcc.Loading(dcc.Graph(id='trajectory-graph-2', style={'height': '600px'}))  # Use dcc.Loading and dcc.Graph
+#                     # dcc.Graph(id='trajectory-graph-2', style={'height': '600px'})  # Use dcc.Loading and dcc.Graph
+#                 ]),
+#                 ddk.Card([
+#                     ddk.Block(width=50, children=[
+#                         dcc.Loading(dcc.Graph(id='longitude-altitude-plot-2'))  # Use dcc.Loading and dcc.Graph
+#                     ]),
+#                     ddk.Block(width=50, children=[
+#                         dcc.Loading(dcc.Graph(id='latitude-altitude-plot-2'))  # Use dcc.Loading and dcc.Graph
+#                     ])
+#                 ])
+#             ])
+#         ])
+#     ])
+#     return layout
+    
+# print(layout)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def layout(project="unknown", **kwargs): 
     layout = ddk.Block([
-        ddk.Card(f"3D Trajectory of 1D Data ({project})"),
-        ddk.Card(dcc.Dropdown(
-            id='flight-dropdown-2',
-            options=[{'label': flight, 'value': flight} for flight in unique_flights],
-            placeholder='Select a flight',
-            clearable=False
-        )),
-        ddk.Card([
-            dcc.Dropdown(
-                id='color-dropdown-2',
-                options=[{'label': col, 'value': col} for col in columns],
-                placeholder='Select a variable for color',
-                clearable=False,
-                style={'width': '200px', 'margin-bottom': '10px'}
-            ),
-            dcc.Loading(dcc.Graph(id='trajectory-graph-2', style={'height': '600px'}))  # Use dcc.Loading and dcc.Graph
-            # dcc.Graph(id='trajectory-graph-2', style={'height': '600px'})  # Use dcc.Loading and dcc.Graph
-        ]),
-        ddk.Card([
-            ddk.Block(width=50, children=[
-                dcc.Loading(dcc.Graph(id='longitude-altitude-plot-2'))  # Use dcc.Loading and dcc.Graph
-            ]),
-            ddk.Block(width=50, children=[
-                dcc.Loading(dcc.Graph(id='latitude-altitude-plot-2'))  # Use dcc.Loading and dcc.Graph
+        ddk.Row([
+            ddk.Sidebar([
+                menu
+            ], foldable=False), # style={'background-color': '#add8e6'}
+            ddk.Block([
+                ddk.Card(f"3D Trajectory of 1D Data ({project})"),
+                ddk.Card(dcc.Dropdown(
+                    id='flight-dropdown-2',
+                    options=[{'label': flight, 'value': flight} for flight in unique_flights],
+                    placeholder='Select a flight',
+                    clearable=False
+                )),
+                ddk.Row([
+                    ddk.Block([
+                        ddk.Card([
+                            dcc.Dropdown(
+                                id='color-dropdown-2',
+                                options=[{'label': col, 'value': col} for col in columns],
+                                placeholder='Select a variable for color',
+                                clearable=False,
+                                style={'width': '200px', 'margin-bottom': '10px'}
+                            ),
+                            dcc.Loading(dcc.Graph(id='trajectory-graph-2', style={'height': '600px'}))  # Use dcc.Loading and dcc.Graph
+                            # dcc.Graph(id='trajectory-graph-2', style={'height': '600px'})  # Use dcc.Loading and dcc.Graph
+                        ])
+                    ]),
+                    ddk.Card([
+                        # ddk.Block(width=50, children=[
+                        dcc.Loading(dcc.Graph(id='longitude-altitude-plot-2')),  # Use dcc.Loading and dcc.Graph
+                        # ]),
+                        # ddk.Block(width=50, children=[
+                        dcc.Loading(dcc.Graph(id='latitude-altitude-plot-2'))  # Use dcc.Loading and dcc.Graph
+                        # ])
+                    ])
+                ])
             ])
         ])
     ])
     return layout
-    
-# print(layout)
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Define callback to update trajectory information based on flight and color variable selection
 @callback(

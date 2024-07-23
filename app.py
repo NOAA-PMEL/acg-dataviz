@@ -18,14 +18,14 @@ menu = ddk.Menu(
     ]
 )
 
-app.layout = ddk.App(show_editor=True, children=[    
+app.layout = ddk.App(children=[    #show_editor=True, 
     ddk.Header([
         # ddk.Logo(src=app.get_asset_url('DataViz_logo_stacked_compass_rose.png')),
         # ddk.Logo(src=app.get_asset_url('ACG_orbit.png')),
         # ddk.Logo(src=app.get_asset_url('original_compass_orbit.png')),
         # ddk.Logo(src=app.get_asset_url('compass_rose_horizontal.png')),
         dcc.Link(
-            ddk.Logo(src=app.get_asset_url('compass_rose_horizontal.png')),
+            ddk.Logo(src=app.get_asset_url('original_compass_orbit.png')), #compass_rose_horizontal
             href=app.get_relative_path('/')
         ),
         # dcc.Link(html.Button('Home', style={'margin-left': '20px'}), href=app.get_relative_path('/')),

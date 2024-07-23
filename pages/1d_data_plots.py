@@ -309,8 +309,6 @@ import io
 import pandas as pd
 
 
-
-
 # Function to load data from URL and convert to DataFrame
 def load_data(url):
     try:
@@ -324,21 +322,16 @@ def load_data(url):
         return pd.DataFrame()  # Return an empty DataFrame in case of error
 
 
-
-
 # Load initial data to get unique flight IDs
 data_url = 'https://data.pmel.noaa.gov/pmel/erddap/tabledap/acg_tillamook2022_fvr-55_cloudysky_1s.nc'
 df_initial = load_data(data_url)
 unique_flights = df_initial['trajectory_id'].unique()
 available_columns = df_initial.columns.tolist()
-
-
+plot_columns = [col for col in available_columns if col != 'trajectory_id']
 
 
 # Register the page with Dash
 dash.register_page(__name__, path="/1d_data_plots")
-
-
 
 
 menu = ddk.Menu([
@@ -369,15 +362,13 @@ menu = ddk.Menu([
 ])
 
 
-
-
 # Define the layout using Dash Design Kit
 def layout(project="unknown", **kwargs):
     return ddk.Block([
         ddk.Row([
             ddk.Sidebar([
                 menu
-            ], foldable=False),
+            ], foldable=False, style={'width': '250px'}),
             ddk.Block([
                 ddk.Card("Welcome to DataViz! --This is a test program, NOT REAL--"),
                 dcc.Dropdown(
@@ -396,35 +387,32 @@ def layout(project="unknown", **kwargs):
                     clearable=False
                 ),
                 ddk.Row([
-                    ddk.Card([
-                        dcc.Dropdown(
-                            id='dropdown-plot1',
-                            options=[
-                                {'label': 'cdp_laser_current', 'value': 'cdp_laser_current'},
-                                {'label': 'altitude', 'value': 'altitude'},
-                                {'label': 'true_air_speed', 'value': 'true_air_speed'}
-                            ],
-                            value='altitude',
-                            clearable=False
-                        ),
-                        dcc.Loading(dcc.Graph(figure={}, id='graph-plot1'))
+                    ddk.Block([
+                        ddk.Card([
+                            ddk.Row([
+                                dcc.Dropdown(
+                                    id='dropdown-plot1',
+                                    options=[{'label': col, 'value': col} for col in plot_columns],
+                                    value='altitude',
+                                    clearable=False,
+                                    style={'width': '300px', 'margin-bottom': '10px'}
+                                )
+                            ]),
+                            dcc.Loading(dcc.Graph(figure={}, id='graph-plot1'))
+                        ], width=100, style={'margin-top': '20px'})
                     ], width=50),
-                    ddk.Card([
-                        dcc.Dropdown(
-                            id='dropdown-plot2',
-                            options=[
-                                {'label': 'cdp_laser_current', 'value': 'cdp_laser_current'},
-                                {'label': 'altitude', 'value': 'altitude'},
-                                {'label': 'true_air_speed', 'value': 'true_air_speed'},
-                                {'label': 'ground_speed', 'value': 'ground_speed'},
-                                {'label': 'pressure_altitude', 'value': 'pressure_altitude'},
-                                {'label': 'height_agl', 'value': 'height_agl'}
-                            ],
-                            value='true_air_speed',
-                            clearable=False
-                        ),
-                        dcc.Loading(dcc.Graph(figure={}, id='graph-plot2'))
-                    ], width=50),
+                    ddk.Block([
+                        ddk.Card([
+                            dcc.Dropdown(
+                                id='dropdown-plot2',
+                                options=[{'label': col, 'value': col} for col in plot_columns],
+                                value='true_air_speed',
+                                clearable=False,
+                                style={'width': '300px', 'margin-bottom': '10px'}
+                            ),
+                            dcc.Loading(dcc.Graph(figure={}, id='graph-plot2'))
+                        ], width=100, style={'margin-top': '20px'})
+                    ], width=50)
                 ]),
                 ddk.Row([
                     ddk.Card([
@@ -465,11 +453,9 @@ def layout(project="unknown", **kwargs):
                 dcc.Download(id='download-selected'),
                 dcc.Download(id='download-dataframe-csv'),
                 dcc.Download(id='download-dataframe-netcdf')
-            ])
+            ], style={'width': 'calc(100% - 250px)'})  # Adjust the width to fit the rest of the screen
         ])
     ])
-
-
 
 
 # Callback to update the table based on dropdown selection
@@ -484,8 +470,6 @@ def update_table(flight_chosen, data_url):
     if flight_chosen:
         df = df[df['trajectory_id'] == flight_chosen]
     return df.to_dict('records')
-
-
 
 
 # Callback to update the scatter plots
@@ -509,11 +493,9 @@ def update_graph(flight_chosen, col_chosen1, col_chosen2, data_url):
             fig1.add_trace(go.Scatter(x=df['time'], y=df[col_chosen1], mode='markers', marker=dict(color=df[col_chosen1], colorscale='viridis', colorbar=dict(title=col_chosen1))))
             fig1.update_layout(title=col_chosen1)
         if col_chosen2 in df.columns:
-            fig2.add_trace(go.Scatter(x=df['time'], y=df[col_chosen2], mode='markers', marker=dict(color=df[col_chosen2], colorscale='plasma', colorbar=dict(title=col_chosen2))))
+            fig2.add_trace(go.Scatter(x=df['time'], y=df[col_chosen2], mode='markers', marker=dict(color=df[col_chosen2], colorscale='viridis', colorbar=dict(title=col_chosen2))))
             fig2.update_layout(title=col_chosen2)
     return fig1, fig2
-
-
 
 
 # Callback for CSV download
@@ -529,14 +511,13 @@ def download_csv(n_clicks, data_url):
     return dcc.send_data_frame(df.to_csv, "acg_tillamook2022_fvr-55_cloudysky_1s.csv", index=False)
 
 
-
-
 # Callback for NetCDF download
 @callback(
     Output(component_id='download-dataframe-netcdf', component_property='data'),
     Input(component_id='btn-download-netcdf', component_property='n_clicks'),
     State('data-dropdown', 'value')
 )
+
 def download_netcdf(n_clicks, data_url):
     if n_clicks is None:
         raise dash.exceptions.PreventUpdate
