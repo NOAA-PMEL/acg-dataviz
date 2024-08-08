@@ -89,28 +89,32 @@ def layout(project="unknown", **kwargs):
                 menu
             ], foldable=False), # style={'background-color': '#add8e6'}
             ddk.Block([
-                ddk.Card(dcc.Dropdown(
-                    id='flight-dropdown',
-                    options=[{'label': flight, 'value': flight} for flight in unique_flights],
-                    placeholder='Select a flight',
-                    clearable=False
-                ), width=50),
-                ddk.Card([
-                    html.Label("Select Variables to Display"),
-                    dcc.Checklist(
-                        id='variable-checklist',
-                        options=[
-                            {'label': 'cdp_dNdlogDp', 'value': 'cdp_dNdlogDp'},
-                            {'label': 'cdp_dSdlogDp', 'value': 'cdp_dSdlogDp'},
-                            {'label': 'cdp_dVdlogDp', 'value': 'cdp_dVdlogDp'}
-                        ],
-                        value=['cdp_dNdlogDp'],  # Default selection
-                        inline=True
-                    ),
-                    html.Label("Select Color Scale Range"),
-                    dcc.Input(id='color-scale-min', type='number', placeholder='Min', value=0),
-                    dcc.Input(id='color-scale-max', type='number', placeholder='Max', value=300),
-                ], width=50),
+                ddk.Row([
+                    ddk.Card(dcc.Dropdown(
+                        id='flight-dropdown',
+                        options=[{'label': flight, 'value': flight} for flight in unique_flights],
+                        placeholder='Select a flight',
+                        clearable=False
+                    ), width=50),
+                    ddk.Card([
+                        html.Label("Select Variables to Display"),
+                        dcc.Checklist(
+                            id='variable-checklist',
+                            options=[
+                                {'label': 'cdp_dNdlogDp', 'value': 'cdp_dNdlogDp'},
+                                {'label': 'cdp_dSdlogDp', 'value': 'cdp_dSdlogDp'},
+                                {'label': 'cdp_dVdlogDp', 'value': 'cdp_dVdlogDp'}
+                            ],
+                            value=['cdp_dNdlogDp'],  # Default selection
+                            inline=True
+                        )
+                    ]),
+                    ddk.Card([
+                        html.Label("Select Color Scale Range"),
+                        dcc.Input(id='color-scale-min', type='number', placeholder='Min', value=0),
+                        dcc.Input(id='color-scale-max', type='number', placeholder='Max', value=300),
+                    ], width=50)
+                ]),
                 ddk.Row([
             ddk.Card(dcc.Loading(dcc.Graph(id='cdp-graph'))),  # Use dcc.Loading and dcc.Graph to display the figure
         ], style={'marginTop': '20px', 'marginBottom': '20px', 'marginLeft': '10px', 'marginRight': '10px'}),  # Adjust margins here

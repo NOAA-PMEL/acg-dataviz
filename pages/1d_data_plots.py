@@ -307,6 +307,7 @@ import requests
 import xarray as xr
 import io
 import pandas as pd
+from UAS_Functions import generate_scatter_plot
 
 
 # Function to load data from URL and convert to DataFrame
