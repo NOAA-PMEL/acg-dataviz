@@ -2,7 +2,14 @@ import dash
 from dash import Dash, dcc, html
 import dash_design_kit as ddk
 
-app = Dash(__name__, use_pages=True, suppress_callback_exceptions=True)
+app = Dash(
+    __name__,
+    use_pages=True,
+    suppress_callback_exceptions=True,
+    meta_tags=[{'name': 'viewport',
+        'content': 'width=device-width, initial-scale=1.0, maximum-scale=1.2, minimum-scale=0.5,'
+    }]
+)
 server = app.server  # expose server variable for Procfile
 menu = ddk.Menu(
     children=[ddk.CollapsibleMenu(
@@ -13,6 +20,7 @@ menu = ddk.Menu(
             dcc.Link('Tillamook2022', href='Tillamook2022'),
             dcc.Link('Vandenberg2023', href='Vandenberg2023'),
             dcc.Link('ATOMIC', href='ATOMIC'),
+            dcc.Link('Barrow', href='Barrow')
             # dcc.Link('Investment', href='/'),
         ])
     ]
@@ -25,7 +33,7 @@ app.layout = ddk.App(children=[    #show_editor=True,
         # ddk.Logo(src=app.get_asset_url('original_compass_orbit.png')),
         # ddk.Logo(src=app.get_asset_url('compass_rose_horizontal.png')),
         dcc.Link(
-            ddk.Logo(src=app.get_asset_url('original_compass_orbit.png')), #compass_rose_horizontal
+            ddk.Logo(src=app.get_asset_url('chosen.png')), #compass_rose_horizontal
             href=app.get_relative_path('/')
         ),
         # dcc.Link(html.Button('Home', style={'margin-left': '20px'}), href=app.get_relative_path('/')),

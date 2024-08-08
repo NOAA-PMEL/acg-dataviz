@@ -30,7 +30,7 @@ menu = ddk.Menu([
         children=[
             dcc.Link('CDP', href=get_relative_path('/cdp')),
             dcc.Link('MSEMS', href=get_relative_path('/msems')),
-            dcc.Link('POPS - not done', href=get_relative_path('/pops'))
+            dcc.Link('POPS', href=get_relative_path('/pops'))
         ]
     ),
     ddk.CollapsibleMenu(
@@ -94,25 +94,47 @@ def layout(project="unknown", **kwargs):
                     options=[{'label': flight, 'value': flight} for flight in unique_flights],
                     placeholder='Select a flight',
                     clearable=False
-                ), width=50),
-                ddk.Card([
-                    html.Label("Select Variable to Display"),
-                    dcc.Checklist(
-                        id='variable-checklist',
-                        options=[
-                            {'label': 'msems_dNdlogDp', 'value': 'msems_dNdlogDp'},
-                            {'label': 'msems_dSdlogDp', 'value': 'msems_dSdlogDp'},
-                            {'label': 'msems_dVdlogDp', 'value': 'msems_dVdlogDp'}
-                        ],
-                        value=['msems_dNdlogDp'],  # Default selection
-                        inline=True
-                    ),
-                    html.Label("Select Color Scale Range"),
-                    dcc.Input(id='color-scale-min', type='number', placeholder='Min', value=0),
-                    dcc.Input(id='color-scale-max', type='number', placeholder='Max', value=300),
-                ], width=50),
+                ), style={'width':'25%', 'margin-bottom': 2}),
+                # ddk.Card([
+                #     html.Label("Select Variable to Display"),
+                #     dcc.Checklist(
+                #         id='variable-checklist',
+                #         options=[
+                #             {'label': 'msems_dNdlogDp', 'value': 'msems_dNdlogDp'},
+                #             {'label': 'msems_dSdlogDp', 'value': 'msems_dSdlogDp'},
+                #             {'label': 'msems_dVdlogDp', 'value': 'msems_dVdlogDp'}
+                #         ],
+                #         value=['msems_dNdlogDp'],  # Default selection
+                #         inline=True
+                #     ),
+                # ], style={'width':'18%'}),
+                # ddk.Card([
+                #     html.Label("Select Color Scale Range"),
+                #     dcc.Input(id='color-scale-min', type='number', placeholder='Min', value=0),
+                #     dcc.Input(id='color-scale-max', type='number', placeholder='Max', value=300),
+                # ], style={'width':'40%'}),
             ddk.Row([
                 ddk.Card(dcc.Loading(dcc.Graph(id='msems-graph'))),  # Use dcc.Graph to display the figure
+                ddk.Block([
+                    ddk.Card([
+                        html.Label("Select Variable to Display"),
+                        dcc.Checklist(
+                            id='variable-checklist',
+                            options=[
+                                {'label': 'msems_dNdlogDp', 'value': 'msems_dNdlogDp'},
+                                {'label': 'msems_dSdlogDp', 'value': 'msems_dSdlogDp'},
+                                {'label': 'msems_dVdlogDp', 'value': 'msems_dVdlogDp'}
+                            ],
+                            value=['msems_dNdlogDp'],  # Default selection
+                            inline=True
+                        ),
+                    ]),
+                    ddk.Card([
+                        html.Label("Select Color Scale Range"),
+                        dcc.Input(id='color-scale-min', type='number', placeholder='Min', value=0),
+                        dcc.Input(id='color-scale-max', type='number', placeholder='Max', value=300),
+                    ]),
+                ], style={'width':'20%'})
             ], style={'marginTop': '20px', 'marginBottom': '20px', 'marginLeft': '10px', 'marginRight': '10px'}),  # Adjust margins here
             ]),
         ]),
@@ -137,6 +159,9 @@ def update_graph(selected_flight, selected_variable, min_value, max_value):
     # Filter data for the selected flight
     flight_data = msems_table.where(msems_table.trajectory_id == selected_flight).dropna(dim="time")
 
+    # Extract the last two digits of the selected flight
+    flight_suffix = str(selected_flight)[-2:]
+
     # Create the heatmap using go.Heatmap
     fig = go.Figure()
 
@@ -151,7 +176,7 @@ def update_graph(selected_flight, selected_variable, min_value, max_value):
             ))
 
     fig.update_layout(
-        title=f"Flight {selected_flight}: 2D MSEMS",
+        title=f"Flight {flight_suffix}: MSEMS Time Series: Concentration of Diameters of Particles over Time",
         xaxis_title="Time",
         yaxis_title="Diameter",
         margin=dict(l=50, r=50, t=80, b=50)

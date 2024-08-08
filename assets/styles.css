@@ -1,0 +1,19 @@
+/* @media (max-width: 768px) {
+    .responsive-image {
+        display: none;
+    }
+} */
+
+
+
+
+body {
+    background-color: lightblue;
+}
+
+/* 
+@media (max-width: 900px) {
+    .sidebar-hidden {
+        display: none;
+    }
+} */

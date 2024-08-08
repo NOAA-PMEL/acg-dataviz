@@ -349,7 +349,7 @@ menu = ddk.Menu([
         children=[
             dcc.Link('CDP', href=get_relative_path('/cdp')),
             dcc.Link('MSEMS', href=get_relative_path('/msems')),
-            dcc.Link('POPS - not done', href=get_relative_path('/pops'))
+            dcc.Link('POPS', href=get_relative_path('/pops'))
         ]
     ),
     ddk.CollapsibleMenu(
@@ -370,7 +370,7 @@ def layout(project="unknown", **kwargs):
                 menu
             ], foldable=False, style={'width': '250px'}),
             ddk.Block([
-                ddk.Card("Welcome to DataViz! --This is a test program, NOT REAL--"),
+                ddk.Card("Welcome to ACG-DataViz!"),
                 dcc.Dropdown(
                     options=[
                         {'label': '1 Second Data', 'value': 'https://data.pmel.noaa.gov/pmel/erddap/tabledap/acg_tillamook2022_fvr-55_cloudysky_1s.nc'},
@@ -393,7 +393,7 @@ def layout(project="unknown", **kwargs):
                                 dcc.Dropdown(
                                     id='dropdown-plot1',
                                     options=[{'label': col, 'value': col} for col in plot_columns],
-                                    value='altitude',
+                                    value='pressure_altitude_ft',
                                     clearable=False,
                                     style={'width': '300px', 'margin-bottom': '10px'}
                                 )
@@ -406,7 +406,7 @@ def layout(project="unknown", **kwargs):
                             dcc.Dropdown(
                                 id='dropdown-plot2',
                                 options=[{'label': col, 'value': col} for col in plot_columns],
-                                value='true_air_speed',
+                                value='fast_ambient_T',
                                 clearable=False,
                                 style={'width': '300px', 'margin-bottom': '10px'}
                             ),
@@ -419,7 +419,7 @@ def layout(project="unknown", **kwargs):
                         dcc.Loading(ddk.DataTable(data=[], page_size=12, style_table={'overflowX': 'auto'}, id='data-table'))
                     ], width=100)
                 ]),
-                html.Button('Full Download', id='btn-full-download', n_clicks=0),
+                html.Button('Download', id='btn-full-download', n_clicks=0),
                 dbc.Modal(
                     [
                         dbc.ModalHeader(dbc.ModalTitle("Header"), close_button=True),

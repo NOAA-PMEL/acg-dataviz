@@ -30,7 +30,7 @@ menu = ddk.Menu([
         children=[
             dcc.Link('CDP', href=get_relative_path('/cdp')),
             dcc.Link('MSEMS', href=get_relative_path('/msems')),
-            dcc.Link('POPS - not done', href=get_relative_path('/pops'))
+            dcc.Link('POPS', href=get_relative_path('/pops'))
         ]
     ),
     ddk.CollapsibleMenu(
@@ -146,6 +146,9 @@ def update_graph(selected_flight, selected_variables, min_value, max_value):
     # Filter data for the selected flight
     flight_data = cdp_table.where(cdp_table.trajectory_id == selected_flight).dropna(dim="time")
 
+    # Extract the last two digits of the selected flight
+    flight_suffix = str(selected_flight)[-2:]
+
     # Create the 2D heatmap using go.Heatmap
     fig = go.Figure()
     for var in selected_variables:
@@ -159,7 +162,7 @@ def update_graph(selected_flight, selected_variables, min_value, max_value):
             ))
 
     fig.update_layout(
-        title=f"Flight {selected_flight}: CDP Variables",
+        title=f"Flight {flight_suffix}: CDP Heatmap",
         xaxis_title="Time",
         yaxis_title="Diameter",
         margin=dict(l=50, r=50, t=80, b=50)  # Adjust margins as needed
@@ -179,7 +182,7 @@ def update_graph(selected_flight, selected_variables, min_value, max_value):
             name='Average cdp_dNdlogDp'
         ))
         average_fig.update_layout(
-            title=f"Flight {selected_flight}: Average cdp_dNdlogDp",
+            title=f"Flight {flight_suffix}: Average cdp_dNdlogDp",
             xaxis_title="Log Diameter",  # Update x-axis title
             yaxis_title="Average cdp_dNdlogDp",
             margin=dict(l=50, r=50, t=80, b=50)  # Adjust margins as needed

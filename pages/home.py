@@ -235,7 +235,7 @@ menu = ddk.Menu([
         children=[
             dcc.Link('CDP', href=get_relative_path('/cdp')),
             dcc.Link('MSEMS', href=get_relative_path('/msems')),
-            dcc.Link('POPS - not done', href=get_relative_path('/pops'))
+            dcc.Link('POPS', href=get_relative_path('/pops'))
         ]
     ),
     ddk.CollapsibleMenu(
@@ -248,21 +248,28 @@ menu = ddk.Menu([
     ),
 ])
 
-# Define the layout with the map and image
+
+
+
+
+
+
+
+
 def layout(project="unknown", **kwargs):
     layout = ddk.Block([
         ddk.Row([
             ddk.Sidebar([
                 menu
-            ], foldable=False), # style={'background-color': '#add8e6'}
+            ], foldable=False), 
             ddk.Block([
                 ddk.Card("Welcome to ACG-DataViz!"),
                 ddk.Row([
                     ddk.Block([
                         dl.Map(
-                            center=[41.8781, -96.6298],
-                            zoom=4,
-                            children=[          
+                            center=[52.5, -115.6298],
+                            zoom=3,
+                            children=[
                                 dl.TileLayer(
                                     url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
                                     attribution="© CartoDB"
@@ -270,13 +277,19 @@ def layout(project="unknown", **kwargs):
                                 dl.Marker(position=[47.6906, -122.2837], children=[
                                     dl.Tooltip("Sandpoint, Seattle, WA"),
                                     dl.Popup([
-                                        dcc.Link('Go to Sandpoint', href='/sandpoint')
+                                        dcc.Link('Go to Sandpoint', href=dash.get_relative_path('/sandpoint'))
+                                    ])
+                                ]),
+                                dl.Marker(position=[71.2906, -156.7886], children=[
+                                    dl.Tooltip("Barrow, AK"),
+                                    dl.Popup([
+                                        dcc.Link('Go to Barrow', href=dash.get_relative_path('/Barrow'))
                                     ])
                                 ]),
                                 dl.Marker(position=[35.2741, -120.6814], children=[
                                     dl.Tooltip("2328 Banderola Ct, San Luis Obispo, CA"),
                                     dl.Popup([
-                                        dcc.Link('Go to San Luis Obispo', href='/san_luis_obispo')
+                                        dcc.Link('Go to San Luis Obispo', href=dash.get_relative_path('/san_luis_obispo'))
                                     ])
                                 ]),
                                 dl.Marker(position=[45.4551, -123.8428], children=[
@@ -294,18 +307,85 @@ def layout(project="unknown", **kwargs):
                             ],
                             style={'width': '100%', 'height': '600px'}
                         )
+
+
                     ], style={'width': '50%', 'height': '580px', 'border': '1px solid #ccc', 'border-radius': '10px'}),
                     ddk.Block([
-                        html.Img(src=dash.get_asset_url('tatooineSunset.jpg'), style={'width': '75%', 'height': 'auto', 'margin-bottom': '7px'}),
-                        html.Img(src=dash.get_asset_url('hothDrone.jpg'), style={'width': '75%', 'height': 'auto', 'margin-bottom': '7px'}),
-                        html.Img(src=dash.get_asset_url('littleBoat.jpg'), style={'width': '75%', 'height': 'auto', 'margin-bottom': '7px'}),
-                        # html.Img(src=dash.get_asset_url('drone.jpg'), style={'width': '75%', 'height': 'auto', 'margin-bottom': '7px'}),
+                        html.Img(src=dash.get_asset_url('tatooineSunset.jpg'), className='responsive-image', style={'width': '75%', 'height': 'auto', 'margin-bottom': '7px'}),
+                        html.Img(src=dash.get_asset_url('hothDrone.jpg'), className='responsive-image', style={'width': '75%', 'height': 'auto', 'margin-bottom': '7px'}),
+                        html.Img(src=dash.get_asset_url('littleBoat.jpg'), className='responsive-image', style={'width': '75%', 'height': 'auto', 'margin-bottom': '7px'}),
                     ], style={'width': '20%', 'display': 'flex', 'justify-content': 'center', 'align-items': 'center', 'padding': '7px'})
                 ], style={'display': 'flex'})
             ])
         ])
     ])
     return layout
+
+
+
+
+
+
+
+
+# Define the layout with the map and image
+# def layout(project="unknown", **kwargs):
+#     layout = ddk.Block([
+#         ddk.Row([
+#             ddk.Sidebar([
+#                 menu
+#             ], foldable=False), # style={'background-color': '#add8e6'}
+#             ddk.Block([
+#                 ddk.Card("Welcome to ACG-DataViz!"),
+#                 ddk.Row([
+#                     ddk.Block([
+#                         dl.Map(
+#                             center=[41.8781, -96.6298],
+#                             zoom=4,
+#                             children=[          
+#                                 dl.TileLayer(
+#                                     url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+#                                     attribution="© CartoDB"
+#                                 ),
+#                                 dl.Marker(position=[47.6906, -122.2837], children=[
+#                                     dl.Tooltip("Sandpoint, Seattle, WA"),
+#                                     dl.Popup([
+#                                         dcc.Link('Go to Sandpoint', href='/sandpoint')
+#                                     ])
+#                                 ]),
+#                                 dl.Marker(position=[35.2741, -120.6814], children=[
+#                                     dl.Tooltip("2328 Banderola Ct, San Luis Obispo, CA"),
+#                                     dl.Popup([
+#                                         dcc.Link('Go to San Luis Obispo', href='/san_luis_obispo')
+#                                     ])
+#                                 ]),
+#                                 dl.Marker(position=[45.4551, -123.8428], children=[
+#                                     dl.Tooltip("Tillamook, OR"),
+#                                     dl.Popup([
+#                                         dcc.Link('Go to Tillamook', href=dash.get_relative_path('/Tillamook2022'))
+#                                     ])
+#                                 ]),
+#                                 dl.Marker(position=[34.7324, -120.5724], children=[
+#                                     dl.Tooltip("Vandenberg, Lompoc, CA"),
+#                                     dl.Popup([
+#                                         dcc.Link('Go to Vandenberg', href=dash.get_relative_path('/Vandenberg2023'))
+#                                     ])
+#                                 ])
+#                             ],
+#                             style={'width': '100%', 'height': '600px'}
+#                         )
+#                     ], style={'width': '50%', 'height': '580px', 'border': '1px solid #ccc', 'border-radius': '10px'}),
+#                     ddk.Block([
+#                         html.Img(src=dash.get_asset_url('tatooineSunset.jpg'), style={'width': '75%', 'height': 'auto', 'margin-bottom': '7px'}),
+#                         html.Img(src=dash.get_asset_url('hothDrone.jpg'), style={'width': '75%', 'height': 'auto', 'margin-bottom': '7px'}),
+#                         html.Img(src=dash.get_asset_url('littleBoat.jpg'), style={'width': '75%', 'height': 'auto', 'margin-bottom': '7px'}),
+#                         # html.Img(src=dash.get_asset_url('drone.jpg'), style={'width': '75%', 'height': 'auto', 'margin-bottom': '7px'}),
+#                     ], style={'width': '20%', 'display': 'flex', 'justify-content': 'center', 'align-items': 'center', 'padding': '7px'})
+#                 ], style={'display': 'flex'})
+#             ])
+#         ])
+#     ])
+#     return layout
 
 
 

@@ -60,7 +60,7 @@ menu = ddk.Menu([
         children=[
             dcc.Link('CDP', href=get_relative_path('/cdp')),
             dcc.Link('MSEMS', href=get_relative_path('/msems')),
-            dcc.Link('POPS - not done', href=get_relative_path('/pops'))
+            dcc.Link('POPS', href=get_relative_path('/pops'))
         ]
     ),
     ddk.CollapsibleMenu(
@@ -109,19 +109,22 @@ def layout(project="unknown", **kwargs):
                         dcc.Dropdown(
                             id='x-axis-dropdown',
                             options=[{'label': col, 'value': col} for col in available_columns],
-                            placeholder='Select X-axis variable',
+                            # placeholder='Select X-axis variable',
+                            value='time',
                             style={'width': '300px', 'margin-bottom': '10px'}
                         ),
                         dcc.Dropdown(
                             id='y-axis-dropdown',
                             options=[{'label': col, 'value': col} for col in available_columns],
-                            placeholder='Select Y-axis variable',
+                            # placeholder='Select Y-axis variable',
+                            value='altitude',
                             style={'width': '300px', 'margin-bottom': '10px'}
                         ),
                         dcc.Dropdown(
                             id='color-dropdown',
                             options=[{'label': col, 'value': col} for col in available_columns],
-                            placeholder='Select a variable for color',
+                            # placeholder='Select a variable for color',
+                            value='fast_ambient_T',
                             clearable=False,
                             style={'width': '300px', 'margin-bottom': '10px'}
                         )
@@ -160,6 +163,9 @@ def update_prop_prop_plot(data_url, selected_flight, x_axis, y_axis, color_var):
     filtered_data = df[df['trajectory_id'] == selected_flight]
 
 
+    # Extract the last two digits of the selected flight
+    flight_suffix = str(selected_flight)[-2:]
+
     # Create scatter plot
     fig = go.Figure(data=go.Scatter(
         x=filtered_data[x_axis],
@@ -174,7 +180,7 @@ def update_prop_prop_plot(data_url, selected_flight, x_axis, y_axis, color_var):
 
 
     fig.update_layout(
-        title=f"Flight {selected_flight}: {y_axis} vs {x_axis}",
+        title=f"Flight {flight_suffix}: {y_axis} vs {x_axis}",
         xaxis_title=x_axis,
         yaxis_title=y_axis,
         showlegend=False,
